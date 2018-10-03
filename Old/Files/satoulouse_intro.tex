@@ -1,0 +1,52 @@
+% !TeX root = IAF2015-TouIST.tex
+% la ligne précédente sert pour le logiciel TexWorks afin de pouvoir compiler ce fichier directement sans devoir ouvrir \satoulouse\_main.tex!
+O. Gasquet et F. Maris enseignent \`a l'Universit\'e Paul Sabatier \`a Toulouse, France. Ils enseignent la logique \`a diff\'erents niveaux, des cours d'introduction \`a la logique propositionnelle jusqu'\`a des sujets avanc\'es pour les \'etudiants en MSc, comme la logique modale ou la planification bas\'ee sur la logique. S. Ben Slimane, A. Comte, A. Heba, O. Lezaud et M. Valais sont des \'etudiants en MSc de la m\^eme universit\'e. Ils ont mis en oeuvre \nameTool\ durant les trois mois de leur projet de MSc.
+
+\subsubsection*{Motivation des \'etudiants}
+Au d\'ebut des \'etudes de premier cycle, nous (enseignants) avons constat\'e que la motivation des \'etudiants peut \^etre augment\'ee en leur montrant que la logique est tr\`es utile pour les informaticiens et que l'informatique ne consite pas seulement \`a \'ecrire du code C ou Java. Classiquement, la logique est motiv\'ee par des exemples abstraits ou, au mieux, par des exemples ludiques. A un moment, nous avons pens\'e qu'il serait pr\'ef\'erable de leur montrer et pas seulement de leur dire qu'avec un peu de connaissance, la logique peut \^etre utilis\'ee pour r\'esoudre des probl\`emes difficiles dont la taille emp\^eche de les r\'esoudre facilement \`a la main ou exigerait une programmation assez complexe en C ou tout autre langage de programmation. \\
+
+\subsubsection*{G\'en\`ese de \satoulouse}
+Bien s\^ur, il existe de nombreux outils logiques (prouveurs, assistants de preuves, \'editeurs de tables de v\'erit\'e,\ldots) sur Internet, m\^eme PROLOG aurait pu \^etre utilis\'e, mais aucun ne correspond \`a nos exigences qui sont :
+\begin{itemize}
+\item l'outil doit \^etre tr\`es facile \`a installer et \`a utiliser, sans syntaxe complexe ;
+\item le prouveur peut \^etre utilis\'e comme une bo\^ite noire sans savoir comment il fonctionne ;
+\item  aucune mise en forme normale,  aucun ordonnancement de clauses, ou aucune coupure PROLOG ne doivent \^etre requis ;
+\item seulement une petite connaissance en logique devrait \^etre n\'ecessaire.
+\end{itemize} 
+
+Comme nous ne pouvions pas trouver un outil existant satisfaisant ces exigences, en 2010, nous avons commenc\'e \`a d\'evelopper le n\^otre, et nous sommes arriv\'es \`a l'id\'ee de simplement d\'evelopper une interface qui permet d'utiliser tr\`es confortablement un prouveur SAT (\`a savoir SAT4J\footnote{\url{http://www.sat4j.org/}}) : cet outil avait \'et\'e applel\'e \satoulouse\ et est d\'ecrit dans \cite{GaScSt2011}. Avec cet outil, les \'etudiants pouvaient exp\'erimenter par eux-m\^eme qu'un langage logique n'est pas seulement descriptif mais peut conduire \`a des calculs qui r\'esolvent des probl\`emes de la vie r\'eelle. En particulier, avec \satoulouse, ils pouvaient r\'esoudre des Sudokus assez facilement, ainsi que beaucoup d'autres probl\`emes combinatoires (emplois du temps, coloration de carte, circuits \'electroniques,\ldots).\
+
+Voici les principales facilit\'es qu'offraient \satoulouse\ :
+\begin{itemize}
+\item Les formules entr\'ees n'ont pas besoin d'\^etre sous forme clausale et des connecteurs arbitraires peuvent \^etre utilis\'es, la mise sous forme normale est faite dynamiquement pendant la saisie au clavier de l'utilisateur ;
+\item Des facilit\'es d'utilisation de grandes conjonctions ou disjonctions sont offertes comme dans :
+\end{itemize}
+  \[\bigwedge_{i\in\{1..9\}}
+  \bigvee_{j\in\{1..9\}}\bigwedge_{n\in\{1..9\}}\bigwedge_{m\in\{1..9\},m\neq
+    n}(p_{i,j,n}\rightarrow \lnot p_{i,j,m})\]
+\begin{itemize}
+\item D\'emarrer le solveur consiste \`a cliquer sur un bouton ;
+\item L'outil affiche un mod\`ele dans la syntaxe de la formule entr\'ee.
+\end{itemize}
+Ainsi, il est possible de montrer la puissance de la logique propositionnelle \`a des \'etudiants qui ont \'et\'e form\'es quelques heures \`a la formalisation de phrases en logique et qui ont acquis les notions de bases de validit\'e et satisfiabilit\'e pour r\'esoudre automatiquement des Sudokus.\
+
+ 
+\subsubsection*{Travaux pratiques avec \satoulouse}
+Mais ce n'est pas toute l'histoire, puisque le m\^eme solveur SAT peut \^etre utilis\'e pour r\'esoudre de nombreux autres probl\`emes combinatoires aussi facilement que pour le Sudoku : ils suffit juste de formaliser les contraintes.\ Nos \'etudiants sont invit\'es \`a le faire pour : des emplois du temps, des colorations de cartes,\ldots \satoulouse\ \`a \'et\'e utilis\'e pendant trois ans par environ 400 \'etudiants avec une grande satisfaction. En particulier, les \'etudiants l'ont utilis\'e pour effectuer des devoirs \`a long terme dans l'esprit de la programmation de projets : nous leur donnons un probl\`eme logique \`a r\'esoudre (trop gros pour \^etre r\'esolu \`a la main), ils doivent le formaliser et ensuite utiliser cette formalisation pour le r\'esoudre. Par exemple, un probl\`eme de stockage de produits chimiques qui doivent \^etre stock\'es dans des salles identiques/contig\"ues/non-contig\"ues en fonction de leur degr\'e de compatibilit\'e. Les \'etudiants doivent r\'esoudre un cas impliquant beaucoup de produits chimiques.
+
+
+\subsubsection*{Limites de \satoulouse\ et g\'en\`ese de \nameTool}
+Mais pendant ces ann\'ees, nous avons remarqu\'e quelques limitations dommageables de \satoulouse\ : de nombreux bugs, des d\'efauts dans l'interface, le manque de modularit\'e (si l'on souhaite changer le prouveur SAT utilis\'e), l'ambigu\"it\'e et les limites de son langage, etc.
+
+Plus qu'une \'evolution, nous avons pens\'e que nous avions besoin d'un tout nouveau logiciel. Il serait appel\'e \nameTool\ qui signifie TOUlouse Integrated Satisfiability Tool et devrait \^etre prononc\'e ``twist''. 
+
+\nameTool\ est bien s\^ur \`a la disposition du public pour t\'el\'echargement \`a partir du site suivant :
+\begin{center}\url{ https://github.com/olzd/touist/releases }\end{center}
+%\todo{add address}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "satoulouse_main"
+%%% End:
+

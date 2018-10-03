@@ -1,0 +1,38 @@
+% !TeX root = IAF2015-TouIST.tex
+% la ligne précédente sert pour le logiciel TexWorks afin de pouvoir compiler ce fichier directement sans devoir ouvrir satoulouse_main.tex!
+
+\subsection{\nameTool\ pour la planification classique SAT}
+
+En Intelligence Artificielle, la \emph{planification} est un processus cognitif qui consiste \`a g\'en\'erer automatiquement, au travers d'une proc\'edure formelle, un r\'esultat articul\'e sous la forme d'un syst\`eme de d\'ecision int\'egr\'e appel\'e \emph{plan}. Le plan est g\'en\'eralement sous la forme d'une collection organis\'ee d'\emph{actions} et il doit permettre \`a l'univers d'\'evoluer de l'\emph{\'etat initial} \`a un \'etat qui satisfait le \emph{but}.
+La planification par satisfaction de base de clauses (planification SAT) a \'et\'e introduite par \cite{kautzS92_planning_sat}.
+
+Une diff\'erence importante de \nameTool\, en comparaison avec \satoulouse\, est sa capacit\'e \`a prendre en compte \`a la fois des formules logiques et ensembles de domaines. Par exemple, si l'on veut r\'esoudre un probl\`eme de planification particulier, \satoulouse\ est facile \`a utiliser pour d\'ecrire le probl\`eme et le r\'esoudre via un solveur SAT. Mais si notre objectif est de r\'esoudre plusieurs probl\`emes de planification g\'en\'eriques, nous pouvons profiter de la flexibilit\'e de \nameTool\ qui permet \`a l'utilisateur de d\'ecrire une m\'ethode g\'en\'erique de r\'esolution avec des r\`egles encod\'ees comme formules et d'utiliser des ensembles de domaines pour d\'ecrire chaque probl\`eme de planification particulier. De nombreuses r\`egles de codage pour la r\'esolution de probl\`emes de planification ont d\'ej\`a \'et\'e propos\'ees \cite{kautzS92_planning_sat} \cite{MaliK99_plan_space_encodings}. Comme exemple d'une telle r\`egle nous donnons ci-apr\`es un codage des \emph{frame-axioms}. Si un fait est faux \`a une \'etape $i-1$ d'un plan solution et devient vrai \`a l'\'etape $i$, alors la disjonction des actions qui peuvent \'etablir le fait \`a l'\'etape $i$ du plan est vraie. C'est \`a dire, au moins une action qui \'etablit le fait doit avoir \'et\'e appliqu\'ee.
+
+
+  \[\begin{aligned}\bigwedge_{i\in\{1..longueur\_plan\}}
+  \bigwedge_{f\in Faits} \hspace{4cm}\\
+  \left((\lnot f(i-1) \wedge f(i)) \Rightarrow 
+  \bigvee_{a\in Actions / f\in Effets(a)} a(i)\right)\end{aligned}\]
+\\
+
+
+\subsection{\nameTool\ pour la planification temporelle SMT}
+
+De plus, en compl\'ement de SAT, notre nouvelle plateforme \nameTool\ est capable de g\'erer des th\'eories comme la diff\'erence logique ou l'arithm\'etique lin\'eaire sur les nombres entiers (QF\_IDL, QF\_LIA) ou les nombres r\'eels (QF\_RDL, QF\_LRA), et d'appeler un solveur SMT pour trouver une solution. Pour \^etre r\'esolus, les probl\`emes de planification temporelle issus du monde r\'eel n\'ecessitent une repr\'esentation continue du temps, et donc, l'utilisation de nombres r\'eels dans les codages logiques. \nameTool\ peut \'egalement \^etre utilis\'e pour r\'esoudre de tels probl\`emes impliquant des actions avec dur\'ee, des \'ev\`enements exog\`enes et des buts temporellement \'etendus, par exemple avec les r\`egles de codage propos\'ees dans \cite{MarisRegnier08}. Nous donnons ci-apr\`es un codage des exclusions mutelles temporelles d'actions. Si deux actions produisant respectivement une proposition $p$ et sa n\'egation sont actives dans le plan, alors les intervalles de temps correspondant \`a l'activation de $p$ et \`a l'activation de $\NOT p$ sont disjoints.
+
+  \[\bigwedge_{a\in Actions}
+  \bigwedge_{b\in Actions}
+  \bigwedge_{f\in Faits | f\in Effets(a) \wedge \lnot f\in Effets(b)}\]
+  \[\left(\left(a \wedge b\right) \Rightarrow 
+  \left( \begin{aligned} \left(\tau(b \underset{fin}{\rightarrow} \lnot f) < \tau(a \underset{debut}{\rightarrow} f)\right)
+    \\ \vee
+    \left(\tau(a \underset{fin}{\rightarrow} f) < \tau(b \underset{debut}{\rightarrow} \lnot f)\right)
+ \end{aligned} \right)\right) \]
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "satoulouse_main"
+%%% End: 
